@@ -41,7 +41,7 @@ app.use(cors());
 // todo 2) ROUTES
 app.use('/api/v1', indexRouter);
 
-// global route
+// Global route
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
 });
