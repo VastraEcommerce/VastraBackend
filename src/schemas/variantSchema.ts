@@ -6,6 +6,7 @@ export interface IVariant {
   color: string;
   size: string;
   count: number;
+  images: string[];
 }
 const variantSchema = new mongoose.Schema<IVariant>({
   price: {
@@ -29,6 +30,13 @@ const variantSchema = new mongoose.Schema<IVariant>({
     default: 1,
     min: 0,
     validate: [validator.isInt, 'count must be integer'],
+  },
+  images: {
+    type: [String],
+    validate: [
+      (val: []) => val.length >= 4,
+      'Variant must have at least 4 images',
+    ],
   },
 });
 
