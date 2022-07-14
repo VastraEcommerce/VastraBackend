@@ -25,9 +25,7 @@ export const updateModel = (Model: Model<any>): RequestHandler =>
     });
     res.status(200).json({
       status: 'success',
-      data: {
-        data: doc,
-      },
+      data: doc,
     });
   });
 
@@ -37,9 +35,7 @@ export const createModel = (Model: Model<any>): RequestHandler =>
 
     res.status(201).json({
       status: 'success',
-      data: {
-        data: doc,
-      },
+      data: doc,
     });
   });
 
@@ -60,9 +56,7 @@ export const getOne = (
 
     return res.status(200).json({
       status: 'success',
-      data: {
-        data: doc,
-      },
+      data: doc,
     });
   });
 
@@ -90,8 +84,6 @@ export const getAll = (Model: Model<any>): RequestHandler =>
     res.status(200).json({
       status: 'success',
       results: docs.length,
-      data: {
-        data: docs,
-      },
+      data: docs,
     });
   });
