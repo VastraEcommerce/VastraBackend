@@ -40,34 +40,37 @@ const reviewSchema = new mongoose.Schema<IReview, ReviewModel>({
   },
 });
 
-reviewSchema.static('calcAverageRatings', async function (productId: any) {
-  const stats = await this.aggregate<IStats>([
-    {
-      $match: { product: productId },
-    },
-    {
-      $group: {
-        _id: '$product',
-        ratingsQuantity: { $sum: 1 },
-        ratingsAverage: {
-          $avg: '$rating',
+reviewSchema.static(
+  'calcAverageRatings',
+  async function calcAverageRatings(productId: any) {
+    const stats = await this.aggregate<IStats>([
+      {
+        $match: { product: productId },
+      },
+      {
+        $group: {
+          _id: '$product',
+          ratingsQuantity: { $sum: 1 },
+          ratingsAverage: {
+            $avg: '$rating',
+          },
         },
       },
-    },
-  ]);
+    ]);
 
-  if (stats.length > 0) {
-    await ProductModel.findByIdAndUpdate(productId, {
-      ratingsQuantity: stats[0].ratingsQuantity,
-      ratingsAverage: stats[0].ratingsAverage,
-    });
-  } else {
-    await ProductModel.findByIdAndUpdate(productId, {
-      ratingsQuantity: 0,
-      ratingsAverage: 4.5,
-    });
+    if (stats.length > 0) {
+      await ProductModel.findByIdAndUpdate(productId, {
+        ratingsQuantity: stats[0].ratingsQuantity,
+        ratingsAverage: stats[0].ratingsAverage,
+      });
+    } else {
+      await ProductModel.findByIdAndUpdate(productId, {
+        ratingsQuantity: 0,
+        ratingsAverage: 4.5,
+      });
+    }
   }
-});
+);
 
 reviewSchema.post('save', async function () {
   await ReviewModel.calcAverageRatings(this.product);

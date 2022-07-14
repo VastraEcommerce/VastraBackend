@@ -1,4 +1,4 @@
-import mongoose, { Schema, Types } from 'mongoose';
+import mongoose, { Model, Schema, Types } from 'mongoose';
 import validator from 'validator';
 import bycrypt from 'bcryptjs';
 import addressSchema, { IAddress } from '../schemas/addressSchema';
@@ -20,6 +20,9 @@ export interface IUser {
   passwordResetToken?: String;
   passwordResetExpires?: mongoose.Date;
   active: boolean;
+}
+
+interface IUserMethods {
   isPasswordCorrect: (
     candidatePassword: string,
     encrybtedUserPassword: string
@@ -28,7 +31,9 @@ export interface IUser {
   createPasswordResetToken: () => string;
 }
 
-const userSchema = new mongoose.Schema<IUser>({
+type UserModel = Model<IUser, {}, IUserMethods>;
+
+const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
   name: {
     type: String,
     required: true,
@@ -112,8 +117,8 @@ const userSchema = new mongoose.Schema<IUser>({
     },
   ],
   passwordChangedAt: Date,
-  // passwordResetToken: String,
-  // passwordResetExpires: Date,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
   active: {
     type: Boolean,
     default: true,
@@ -190,6 +195,6 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken;
 };
 
-const UserModel = mongoose.model<IUser>('user', userSchema);
+const UserModel = mongoose.model<IUser, UserModel>('user', userSchema);
 
 export default UserModel;
