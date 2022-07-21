@@ -15,7 +15,6 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
-    "crypto": "^1.0.1",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-mongo-sanitize": "^2.2.0",
@@ -42,9 +41,7 @@
     "@types/validator": "^13.7.3",
     "jasmine": "^4.2.1",
     "jasmine-spec-reporter": "^7.0.0",
-    "mongoose-dummy": "^1.0.8",
     "morgan": "^1.10.0",
-    "ndb": "^1.1.5",
     "supertest": "^6.2.3",
     "tsc": "^2.0.4",
     "typescript": "^4.7.4"
