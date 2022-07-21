@@ -23,7 +23,8 @@ export const productShecma = new mongoose.Schema<IProduct>(
     brand: {
       type: String,
       required: true,
-      validate: [validator.isAlpha, 'Invalid brand name'],
+      //! Commeted for only dummy data is not valid
+      // validate: [validator.isAlpha, 'Invalid brand name'],
     },
     brand_thumbnail: {
       type: String,
@@ -32,7 +33,8 @@ export const productShecma = new mongoose.Schema<IProduct>(
     title: {
       type: String,
       required: true,
-      validate: [validator.isAlpha, 'Invalid title'],
+      //! Commeted for only dummy data is not valid
+      // validate: [validator.isAlpha, 'Invalid title'],
     },
     description: {
       type: String,
