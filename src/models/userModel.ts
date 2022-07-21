@@ -20,6 +20,7 @@ export interface IUser {
   passwordResetToken?: String;
   passwordResetExpires?: mongoose.Date;
   active: boolean;
+  photo: string;
 }
 
 interface IUserMethods {
@@ -123,6 +124,10 @@ const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
     type: Boolean,
     default: true,
     select: false,
+  },
+  photo: {
+    type: String,
+    default: 'default.jpg',
   },
 });
 
