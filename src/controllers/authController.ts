@@ -1,11 +1,18 @@
-import { NextFunction, Request, Response } from 'express';
 import crypto from 'crypto';
+import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import mongoose, { Types } from 'mongoose';
 import UserModel, { IUser } from '../models/userModel';
 import AppError from '../utils/AppError';
 import catchAsync from '../utils/catchAsync';
 import sendEmail from '../utils/email';
+
+export interface CustomRequest extends Request {
+  user: {
+    id: string;
+    role: IUser['role'];
+  };
+}
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY!;
 const EXPIRES_IN = process.env.JWT_EXPIRES_IN!;
@@ -81,14 +88,7 @@ export const login = catchAsync(
   }
 );
 
-export interface CustomRequest extends Request {
-  user?: {
-    id: Types.ObjectId;
-    role: IUser['role'];
-  };
-}
-
-export const product = catchAsync(
+export const protect = catchAsync(
   async (req: CustomRequest, res: Response, next: NextFunction) => {
     // todo 1) Getting the token and check if it exit
     let token;
@@ -130,8 +130,8 @@ export const product = catchAsync(
 
 export const restrictTo =
   (...roles: IUser['role'][]) =>
-  (req: CustomRequest, res: Response, next: NextFunction) => {
-    if (!roles.includes(req.user?.role!)) {
+  (req: Request, res: Response, next: NextFunction) => {
+    if (!roles.includes((req as CustomRequest).user?.role!)) {
       return next(
         new AppError('You do not have permission to perform this action', 403)
       );
@@ -186,7 +186,7 @@ export const forgetPassword = catchAsync(
 );
 
 export const resetPassword = catchAsync(
-  async (req: Request, res: Response, next: NewableFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     // todo 1) Get user based on the token
     // The same algorithm is used in createPasswordResetToken in userModel.js
     const hashedToken = crypto // Create the same token which is suposed saved in database
@@ -213,5 +213,29 @@ export const resetPassword = catchAsync(
 
     // todo 4) Log the user in, Send JWT
     return createSendToken(user, 200, res);
+  }
+);
+
+export const updatePassword = catchAsync(
+  async (req: CustomRequest, res: Response, next: NextFunction) => {
+    const { oldPassword, newPassword, newPasswordConfirm } = req.body;
+
+    // todo 1) Get user from collection
+    const user = await UserModel.findById(req.user.id).select('+password');
+    // todo 2) Check if POSTed current password is correct
+    if (!(await user?.isPasswordCorrect(oldPassword, user.password))) {
+      return next(new AppError('Your old password is incorrect', 401));
+    }
+
+    // todo 3) If so, update password
+    if (user) {
+      // type guard
+      user.password = newPassword;
+      user.passwordConfirm = newPasswordConfirm;
+      await user.save();
+      // ? User.findByIdAndUpdate() will not work the schema validation
+      // todo 4) Log user in, send JWT
+      return createSendToken(user, 200, res);
+    }
   }
 );
