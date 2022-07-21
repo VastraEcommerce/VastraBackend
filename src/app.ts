@@ -11,6 +11,8 @@ import AppError from './utils/AppError';
 const app = express();
 
 // todo 1) GLOBAL MIDDLEWARES
+app.use(cors()); // Access-Control-Allow-Origin
+
 app.use(helmet()); // Set security HTTP headers
 app.use(helmet.xssFilter()); // XSS-Protection
 // Development logging
@@ -31,6 +33,9 @@ app.use('/api', limiter);
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
+
+// Parse URL-encoded bodies
+app.use(express.urlencoded({ extended: true }));
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
