@@ -1,12 +1,15 @@
 import mongoose from 'mongoose';
-import validator from 'validator';
+import slugify from 'slugify';
 import variantSchema, { IVariant } from '../schemas/variantSchema';
+import AppError from '../utils/AppError';
+import { isUniqueArray } from '../utils/helperFunctions';
 
 export interface IProduct {
   category: string;
   brand: string;
   brand_thumbnail: string;
   title: string;
+  slug: string;
   description: string;
   ratingsAverage: number;
   ratingsQuantity: number;
@@ -33,9 +36,12 @@ export const productShecma = new mongoose.Schema<IProduct>(
     title: {
       type: String,
       required: true,
+      unique: true,
+      trim: true,
       //! Commeted for only dummy data is not valid
       // validate: [validator.isAlpha, 'Invalid title'],
     },
+    slug: String,
     description: {
       type: String,
       required: true,
@@ -60,6 +66,25 @@ export const productShecma = new mongoose.Schema<IProduct>(
     },
   }
 );
+
+productShecma.index({ price: 1, ratingsAverage: -1 });
+productShecma.index({ slug: 1 });
+// productShecma.index(
+//   { _id: 1, 'variants.$.color': 1, 'variants.$.sizes.$.size': 1 },
+//   { unique: true }
+// );
+
+productShecma.pre('validate', function beforeValidateProduct(next) {
+  if (!isUniqueArray(this.variants, 'color')) {
+    next(new AppError(`Thare are duplicates of colors`, 400));
+  }
+  next();
+});
+
+productShecma.pre('save', function slugifyTitle(next) {
+  this.slug = slugify(this.title, { lower: true });
+  next();
+});
 
 const ProductModel = mongoose.model<IProduct>('product', productShecma);
 
