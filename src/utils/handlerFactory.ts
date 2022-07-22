@@ -5,7 +5,7 @@ import APIFeatures from './APIFeatures';
 import AppError from './AppError';
 import catchAsync from './catchAsync';
 
-export const deleteModel = (Model: Model<any>): RequestHandler =>
+export const deleteModel = <T>(Model: Model<T>): RequestHandler =>
   catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const doc = await Model.findByIdAndDelete(req.params.id);
     if (!doc) {
@@ -17,7 +17,7 @@ export const deleteModel = (Model: Model<any>): RequestHandler =>
     });
   });
 
-export const updateModel = (Model: Model<any>): RequestHandler =>
+export const updateModel = <T>(Model: Model<T>): RequestHandler =>
   catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -29,7 +29,7 @@ export const updateModel = (Model: Model<any>): RequestHandler =>
     });
   });
 
-export const createModel = (Model: Model<any>): RequestHandler =>
+export const createModel = <T>(Model: Model<T>): RequestHandler =>
   catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const doc = await Model.create(req.body);
 
@@ -39,8 +39,8 @@ export const createModel = (Model: Model<any>): RequestHandler =>
     });
   });
 
-export const getOne = (
-  Model: Model<any>,
+export const getOne = <T>(
+  Model: Model<T>,
   populateOptions?: string | string[]
 ): RequestHandler =>
   catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -60,7 +60,7 @@ export const getOne = (
     });
   });
 
-export const getAll = (Model: Model<any>): RequestHandler =>
+export const getAll = <T>(Model: Model<T>): RequestHandler =>
   catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     // ! To allow for nested GET reviews on products (Hack)
     const filter = req.params.productId
