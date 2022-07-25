@@ -15,6 +15,11 @@ app.use(cors()); // Access-Control-Allow-Origin
 
 app.use(helmet()); // Set security HTTP headers
 app.use(helmet.xssFilter()); // XSS-Protection
+
+app.use((req, res, next) => {
+  res.header('Cross-Origin-Resource-Policy', 'cross-origin');
+  next();
+});
 // Development logging
 if (process.env.NODE_ENV === 'development') {
   console.log('Start Development');
@@ -42,6 +47,9 @@ app.use(mongoSanitize());
 
 // Allow cross origins
 app.use(cors());
+
+// For static files
+app.use(express.static(`public`));
 
 // todo 2) ROUTES
 app.use('/api/v1', indexRouter);
