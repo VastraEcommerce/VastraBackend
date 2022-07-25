@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "tsc": "tsc -w",
-    "start": "nodemon dist/server.js",
-    "start:prod": "cross-env NODE_ENV=production nodemon dist/server.js",
+    "watch": "tsc -w",
+    "postinstall": "tsc",
+    "start": "cross-env NODE_ENV=production node dist/server.js",
+    "dev": "nodemon dist/server.js",
+    "prod": "cross-env NODE_ENV=production nodemon dist/server.js",
     "prettier": "npx prettier --write ."
   },
   "author": "",
