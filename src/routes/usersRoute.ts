@@ -15,6 +15,7 @@ import {
   getAllUser,
   getMe,
   getUser,
+  isExist,
   updateMe,
   updateUser,
 } from '../controllers/userControllers';
@@ -25,6 +26,7 @@ usersRouter.post('/signup', signup);
 usersRouter.post('/login', login);
 usersRouter.post('/forgotPassword', forgetPassword);
 usersRouter.patch('/resetPassword/:token', resetPassword);
+usersRouter.post('/isExist', isExist);
 
 // All Routes after this middleware will be protected
 usersRouter.use(protect);

@@ -1,4 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
+import isEmail from 'validator/lib/isEmail';
 import UserModel from '../models/userModel';
 import AppError from '../utils/AppError';
 import catchAsync from '../utils/catchAsync';
@@ -81,6 +82,21 @@ export const updateMe = catchAsync(
     return res.status(200).json({
       status: 'success',
       user,
+    });
+  }
+);
+
+// This route is used only for UI interaction while signing up new users to inform them if the email entered already exists or not
+export const isExist = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email } = req.body as { email: string };
+    if (!isEmail(email))
+      return next(new AppError('Please enter vaild email!', 400));
+
+    const user = await UserModel.findOne({ email });
+
+    res.status(200).json({
+      isExist: user ? true : false,
     });
   }
 );
