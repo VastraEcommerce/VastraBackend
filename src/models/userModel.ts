@@ -102,8 +102,8 @@ const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
   ],
   role: {
     type: String,
-    required: true,
     enum: ['user', 'admin'],
+    default: 'user',
   },
   paymentMethods: [
     {
