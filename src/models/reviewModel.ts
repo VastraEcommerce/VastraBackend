@@ -87,4 +87,8 @@ const ReviewModel = mongoose.model<IReview, ReviewModel>(
   reviewSchema
 );
 
+reviewSchema.pre(/^find/, function propulateReviewsUers() {
+  this.populate({ path: 'user', select: 'name photo' });
+});
+
 export default ReviewModel;
