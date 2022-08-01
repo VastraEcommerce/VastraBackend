@@ -82,13 +82,13 @@ reviewSchema.post(/^findOneAnd/, async function () {
   await ReviewModel.calcAverageRatings(this.product);
 });
 
+reviewSchema.pre(/^find/, function propulateReviewsUers() {
+  this.populate({ path: 'user', select: 'name photo' });
+});
+
 const ReviewModel = mongoose.model<IReview, ReviewModel>(
   'review',
   reviewSchema
 );
-
-reviewSchema.pre(/^find/, function propulateReviewsUers() {
-  this.populate({ path: 'user', select: 'name photo' });
-});
 
 export default ReviewModel;
