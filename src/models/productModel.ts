@@ -26,6 +26,7 @@ export const productShecma = new mongoose.Schema<IProduct>(
     brand: {
       type: String,
       required: true,
+      trim: true,
       //! Commeted for only dummy data is not valid
       // validate: [validator.isAlpha, 'Invalid brand name'],
     },

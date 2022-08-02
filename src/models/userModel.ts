@@ -38,6 +38,7 @@ const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
   name: {
     type: String,
     required: true,
+    trim: true,
   },
   email: {
     type: String,
