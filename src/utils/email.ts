@@ -25,7 +25,7 @@ const sendEmail = async (options: EmailOptions) => {
     text: options.message,
   };
 
-  // todo 3) Actually send the email
+  // todo 3) send the email
   await transporter.sendMail(mailOptions);
 };
 

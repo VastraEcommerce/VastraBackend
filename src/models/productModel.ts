@@ -20,19 +20,20 @@ export const productShecma = new mongoose.Schema<IProduct>(
   {
     category: {
       type: String,
+      trim: true,
       required: true,
       enum: ['Shirts', 'Pants', 'T-shirts', 'Sportswear'],
     },
     brand: {
       type: String,
       required: true,
-      trim: true,
       //! Commeted for only dummy data is not valid
       // validate: [validator.isAlpha, 'Invalid brand name'],
     },
     brand_thumbnail: {
       type: String,
       required: true,
+      trim: true,
     },
     title: {
       type: String,
@@ -46,6 +47,7 @@ export const productShecma = new mongoose.Schema<IProduct>(
     description: {
       type: String,
       required: true,
+      trim: true,
     },
     ratingsAverage: {
       type: Number,
@@ -68,7 +70,7 @@ export const productShecma = new mongoose.Schema<IProduct>(
   }
 );
 
-productShecma.index({ price: 1, ratingsAverage: -1 });
+productShecma.index({ ratingsAverage: -1 });
 productShecma.index({ slug: 1 });
 // productShecma.index(
 //   { _id: 1, 'variants.$.color': 1, 'variants.$.sizes.$.size': 1 },

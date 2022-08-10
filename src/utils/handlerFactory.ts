@@ -72,6 +72,7 @@ export const getAll = <T>(Model: Model<T>): RequestHandler =>
       Model.find(filter),
       req.query as ParsedUrlQueryInput
     )
+      .search()
       .filter()
       .sort()
       .limitFields()

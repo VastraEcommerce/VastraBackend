@@ -90,7 +90,7 @@ export const updateMe = catchAsync(
 export const isExist = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { email } = req.body as { email: string };
-    if (!email && email.trim().length === 0 && !isEmail(email))
+    if (!isEmail(email))
       return next(new AppError('Please enter vaild email!', 400));
 
     const user = await UserModel.findOne({ email });

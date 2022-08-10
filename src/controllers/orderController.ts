@@ -1,10 +1,10 @@
 import OrderModel from '../models/orderModel';
 import {
-    createModel,
-    deleteModel,
-    getAll,
-    getOne,
-    updateModel,
+  createModel,
+  deleteModel,
+  getAll,
+  getOne,
+  updateModel,
 } from '../utils/handlerFactory';
 
 export const getAllOrder = getAll(OrderModel);

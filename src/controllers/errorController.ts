@@ -22,7 +22,7 @@ const handleCastErrorDB = (err: CastError) => {
 const handleDuplicateFieldsDB = (err: any) => {
   const value = err.errmsg.match(/(["'])(?:(?=(\\?))\2.)*?\1/)[0];
   console.log(value);
-  const message = `Duplicate field value:${value}. Please use anothor value!`;
+  const message = `Duplicate field value:${value}. Please use another value!`;
 
   return new AppError(message, 400);
 };
@@ -55,7 +55,7 @@ const sendErrorProd = (err: AppError, res: Response) => {
     });
   }
 
-  // Programming or other unknow error: don't leak error details
+  // Programming or other unknown error: don't leak error details
   else {
     console.error('Error 💥💥', err);
     res.status(500).json({
@@ -65,12 +65,7 @@ const sendErrorProd = (err: AppError, res: Response) => {
   }
 };
 
-const globalErrorHandler: ErrorRequestHandler = (
-  err,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
   console.log({ err });

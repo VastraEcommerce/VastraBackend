@@ -4,11 +4,11 @@ import { IProduct, productShecma } from './productModel';
 export interface IOrder {
   products: IProduct[];
   status:
-  | 'pendingPayment'
-  | 'preparing'
-  | 'shipping'
-  | 'completed'
-  | 'canceled';
+    | 'pendingPayment'
+    | 'preparing'
+    | 'shipping'
+    | 'completed'
+    | 'canceled';
   totalPrice: number;
 }
 
@@ -43,4 +43,4 @@ const orderSchema = new mongoose.Schema<IOrder>(
 );
 
 const OrderModel = mongoose.model<IOrder>('order', orderSchema);
-export default OrderModel
+export default OrderModel;

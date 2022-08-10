@@ -1,10 +1,10 @@
 import ProductModel from '../models/productModel';
 import {
-    createModel,
-    deleteModel,
-    getAll,
-    getOne,
-    updateModel,
+  createModel,
+  deleteModel,
+  getAll,
+  getOne,
+  updateModel,
 } from '../utils/handlerFactory';
 
 export const getAllProduct = getAll(ProductModel);

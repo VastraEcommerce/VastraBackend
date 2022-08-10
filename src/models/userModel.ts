@@ -21,6 +21,7 @@ export interface IUser {
   passwordResetExpires?: mongoose.Date;
   active: boolean;
   photo: string;
+  refreshToken: string[];
 }
 
 interface IUserMethods {
@@ -130,6 +131,11 @@ const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
     type: String,
     default: 'default.jpg',
   },
+  refreshToken: {
+    type: [String],
+    select: false,
+    default: [],
+  },
 });
 
 //? Middleware before QUERY
@@ -143,7 +149,7 @@ userSchema.pre('save', async function (next) {
   // ! Only run this function if password was not actually modified
   if (!this.isModified('password')) return next();
 
-  // Hash the password with cost of 12
+  // Hash the password with a cost of 12
   this.password = await bycrypt.hash(this.password, 12);
 
   // Delete password confirm value from the database
@@ -152,16 +158,16 @@ userSchema.pre('save', async function (next) {
   return next();
 });
 
-//? This middleware for record when password is changed
+//? This middleware for recording when the password is changed
 userSchema.pre('save', function (next) {
-  // ! Run this fucntin only when password is changed with existing user not new user.
+  // ! Run this function only when the password is changed with the existing user, not the new user.
   if (!this.isModified('password') || this.isNew) return next();
 
   this.passwordChangedAt = (Date.now() - 1000) as unknown as mongoose.Date;
   return next();
 });
 
-// Method to check password is correct while Sign In
+// Method to check the password is correct while Sign In
 userSchema.methods.isPasswordCorrect = function (
   candidatePassword: string,
   encrybtedUserPassword: string
@@ -169,7 +175,7 @@ userSchema.methods.isPasswordCorrect = function (
   return bycrypt.compare(candidatePassword, encrybtedUserPassword);
 };
 
-// Method to check if user changed password after the token was issued
+// Method to check if the user changed the password after the token was issued
 userSchema.methods.isPasswordChangedAfterThisToken = function (
   JWTTimestamp: JwtPayload['iat']
 ) {
@@ -183,7 +189,7 @@ userSchema.methods.isPasswordChangedAfterThisToken = function (
   return false;
 };
 
-// Method to create token for reset password
+// Method to create a token for reset password
 userSchema.methods.createPasswordResetToken = function () {
   // this token will send by email
   const resetToken = crypto.randomBytes(32).toString('hex');
