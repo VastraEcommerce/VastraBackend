@@ -14,7 +14,7 @@ export interface IVariant {
   images: string[];
 }
 
-const sizeSchema = new Schema<ISize>(
+export const sizeSchema = new Schema<ISize>(
   {
     size: {
       type: String,

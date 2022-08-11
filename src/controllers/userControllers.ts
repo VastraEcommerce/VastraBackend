@@ -108,7 +108,7 @@ export const isExist = catchAsync(
   }
 );
 
-export const addToCart = catchAsync(
+/* export const addToCart = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = await UserModel.findByIdAndUpdate(
       (req as CustomRequest).user.id,
@@ -120,9 +120,9 @@ export const addToCart = catchAsync(
       user,
     });
   }
-);
+); */
 
-export const removeFromCart = catchAsync(
+/* export const removeFromCart = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = await UserModel.findByIdAndUpdate(
       (req as CustomRequest).user.id,
@@ -135,8 +135,8 @@ export const removeFromCart = catchAsync(
     });
   }
 );
-
-export const getMyCart = catchAsync(
+ */
+/* export const getMyCart = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const id = (req as CustomRequest).user.id;
 
@@ -176,3 +176,4 @@ export const getMyCart = catchAsync(
     });
   }
 );
+ */

@@ -9,7 +9,11 @@ import {
 } from '../utils/handlerFactory';
 import { CustomRequest } from './authController';
 
-export const setBody = (req: Request, res: Response, next: NextFunction) => {
+export const setBodyForProduct = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   req.body.user = req.body.user
     ? req.body.user
     : (req as CustomRequest).user.id;
