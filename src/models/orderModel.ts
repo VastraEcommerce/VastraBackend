@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { IProduct, productShecma } from './productModel';
+import { IProduct, productSchema } from './productModel';
 
 export interface IOrder {
   products: IProduct[];
@@ -16,7 +16,7 @@ const orderSchema = new mongoose.Schema<IOrder>(
   {
     products: [
       {
-        type: productShecma,
+        type: productSchema,
         required: true,
       },
     ],

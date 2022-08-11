@@ -1,5 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { ParsedUrlQueryInput } from 'querystring';
 import APIFeatures from './APIFeatures';
 import AppError from './AppError';
@@ -46,8 +46,11 @@ export const getOne = <T>(
   catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
 
+    console.log({ id });
+
     const query = Model.findById(id);
     if (populateOptions) query.populate(populateOptions);
+
     const doc = await query;
 
     if (!doc) {
@@ -63,9 +66,11 @@ export const getOne = <T>(
 export const getAll = <T>(Model: Model<T>): RequestHandler =>
   catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     // ! To allow for nested GET reviews on products (Hack)
-    const filter = req.params.productId
+    let filter: any = req.params.productId
       ? { product: req.params.productId }
       : {};
+
+    filter = req.body.user ? { user: req.body.user } : {};
 
     // Bulid Query
     const feartures = new APIFeatures(

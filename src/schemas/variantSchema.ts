@@ -14,12 +14,12 @@ export interface IVariant {
   images: string[];
 }
 
-const sizeSchema = new Schema<ISize>(
+export const sizeSchema = new Schema<ISize>(
   {
     size: {
       type: String,
       required: [true, 'Must have size'],
-      enum: ['S', 'M', 'L', 'XL', 'XXL', 'XXXl'],
+      // enum: ['S', 'M', 'L', 'XL', 'XXL', 'XXXl'],
     },
     count: {
       type: Number,

@@ -5,7 +5,7 @@ import {
   deleteReview,
   getAllReview,
   getReview,
-  setBody,
+  setBodyForProduct,
   updateReview,
 } from '../controllers/reviewController';
 
@@ -18,7 +18,7 @@ reviewsRouter.get('/', getAllReview);
 
 reviewsRouter.use(protect);
 
-reviewsRouter.post('/', restrictTo('user'), setBody, addReview);
+reviewsRouter.post('/', restrictTo('user'), setBodyForProduct, addReview);
 
 reviewsRouter
   .route('/:id')

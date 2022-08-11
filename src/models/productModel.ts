@@ -16,13 +16,13 @@ export interface IProduct {
   variants: IVariant[];
 }
 
-export const productShecma = new mongoose.Schema<IProduct>(
+export const productSchema = new mongoose.Schema<IProduct>(
   {
     category: {
       type: String,
       trim: true,
       required: true,
-      enum: ['Shirts', 'Pants', 'T-shirts', 'Sportswear'],
+      // enum: ['Shirts', 'Pants', 'T-shirts', 'Sportswear'],
     },
     brand: {
       type: String,
@@ -32,7 +32,7 @@ export const productShecma = new mongoose.Schema<IProduct>(
     },
     brand_thumbnail: {
       type: String,
-      required: true,
+      // required: true,
       trim: true,
     },
     title: {
@@ -70,25 +70,25 @@ export const productShecma = new mongoose.Schema<IProduct>(
   }
 );
 
-productShecma.index({ ratingsAverage: -1 });
-productShecma.index({ slug: 1 });
-// productShecma.index(
+productSchema.index({ ratingsAverage: -1 });
+productSchema.index({ slug: 1 });
+// productSchema.index(
 //   { _id: 1, 'variants.$.color': 1, 'variants.$.sizes.$.size': 1 },
 //   { unique: true }
 // );
 
-productShecma.pre('validate', function beforeValidateProduct(next) {
+productSchema.pre('validate', function beforeValidateProduct(next) {
   if (!isUniqueArray(this.variants, 'color')) {
     next(new AppError(`Thare are duplicates of colors`, 400));
   }
   next();
 });
 
-productShecma.pre('save', function slugifyTitle(next) {
+productSchema.pre('save', function slugifyTitle(next) {
   this.slug = slugify(this.title, { lower: true });
   next();
 });
 
-const ProductModel = mongoose.model<IProduct>('product', productShecma);
+const ProductModel = mongoose.model<IProduct>('product', productSchema);
 
 export default ProductModel;
