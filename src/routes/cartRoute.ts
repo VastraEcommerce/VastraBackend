@@ -13,10 +13,15 @@ const cartRouter = Router({ mergeParams: true });
 
 cartRouter.use(protect, restrictTo('user'));
 
-cartRouter.post('/', setBodyForCart, addCartItem);
-cartRouter.get('/', setBodyForCart, getAllCartItems);
-cartRouter.get('/:id', getCartItem);
-cartRouter.delete('/:id', deleteCartItem);
-cartRouter.patch('/:id', updateCartItem);
+cartRouter
+  .route('/')
+  .post(setBodyForCart, addCartItem)
+  .get(setBodyForCart, getAllCartItems);
+
+cartRouter
+  .route('/:id')
+  .get(getCartItem)
+  .delete(deleteCartItem)
+  .patch(updateCartItem);
 
 export default cartRouter;

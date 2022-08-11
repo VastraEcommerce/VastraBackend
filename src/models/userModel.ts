@@ -11,8 +11,6 @@ export interface IUser {
   password: string;
   passwordConfirm: string;
   address: IAddress[];
-  cart: Types.ObjectId[];
-  orders: Types.ObjectId[];
   role: 'admin' | 'user';
   paymentMethods: 'cash' | 'card';
   phone: string[];
@@ -90,18 +88,6 @@ const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
     ],
     validate: [(el: []) => el.length <= 3, '{PATH} exceeds the limit of 3'],
   },
-  cart: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'product',
-    },
-  ],
-  orders: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'order',
-    },
-  ],
   role: {
     type: String,
     enum: ['user', 'admin'],
