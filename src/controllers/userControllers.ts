@@ -1,4 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { Types } from 'mongoose';
 import isEmail from 'validator/lib/isEmail';
 import UserModel from '../models/userModel';
 import AppError from '../utils/AppError';
@@ -125,6 +126,47 @@ export const removeFromCart = catchAsync(
     return res.status(200).json({
       status: 'success',
       user,
+    });
+  }
+);
+
+export const getMyCart = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = (req as CustomRequest).user.id;
+
+    const cart = await UserModel.aggregate([
+      { $match: { _id: new Types.ObjectId(id) } },
+      { $unwind: '$cart' },
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'cart',
+          foreignField: '_id',
+          as: 'cart',
+        },
+      },
+      {
+        $set: { cart: { $first: '$cart' } },
+      },
+      {
+        $group: {
+          _id: '$_id',
+          cart: { $push: '$cart' },
+          quantity: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          quantity: 1,
+          cart: { $first: '$cart' },
+        },
+      },
+    ]);
+
+    return res.status(200).json({
+      status: 'success',
+      data: cart[0],
     });
   }
 );

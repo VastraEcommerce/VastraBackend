@@ -17,6 +17,7 @@ import {
   deleteUser,
   getAllUser,
   getMe,
+  getMyCart,
   getUser,
   isExist,
   removeFromCart,
@@ -43,6 +44,7 @@ usersRouter.patch('/updateMe', updateMe);
 usersRouter.delete('/deleteMe', deleteMe);
 usersRouter.post('/addToCart', addToCart);
 usersRouter.delete('/removeFromCart', removeFromCart);
+usersRouter.get('/myCart', getMyCart);
 
 // All Routes after this middleware will be restricted to admin only
 usersRouter.use(restrictTo('admin'));
