@@ -11,13 +11,16 @@ import {
   updatePassword,
 } from '../controllers/authController';
 import {
+  addToCart,
   addUser,
   deleteMe,
   deleteUser,
   getAllUser,
   getMe,
+  getMyCart,
   getUser,
   isExist,
+  removeFromCart,
   updateMe,
   updateUser,
 } from '../controllers/userControllers';
@@ -39,6 +42,9 @@ usersRouter.patch('/updateMyPassword', updatePassword);
 usersRouter.get('/me', getMe, getUser);
 usersRouter.patch('/updateMe', updateMe);
 usersRouter.delete('/deleteMe', deleteMe);
+usersRouter.post('/addToCart', addToCart);
+usersRouter.delete('/removeFromCart', removeFromCart);
+usersRouter.get('/myCart', getMyCart);
 
 // All Routes after this middleware will be restricted to admin only
 usersRouter.use(restrictTo('admin'));

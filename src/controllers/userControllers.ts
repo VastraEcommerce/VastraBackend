@@ -1,4 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { Types } from 'mongoose';
 import isEmail from 'validator/lib/isEmail';
 import UserModel from '../models/userModel';
 import AppError from '../utils/AppError';
@@ -27,7 +28,7 @@ const filterObj = (obj: any, ...filteredFeilds: string[]) => {
 
 // Not allowed Update Password
 export const getAllUser = getAll(UserModel);
-export const getUser = getOne(UserModel);
+export const getUser = getOne(UserModel, ['cart', 'orders']);
 export const updateUser = updateModel(UserModel);
 export const deleteUser = deleteModel(UserModel);
 
@@ -103,6 +104,75 @@ export const isExist = catchAsync(
 
     res.status(200).json({
       isExist: user ? true : false,
+    });
+  }
+);
+
+export const addToCart = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await UserModel.findByIdAndUpdate(
+      (req as CustomRequest).user.id,
+      { $push: { cart: req.body.cart } }
+    );
+
+    return res.status(200).json({
+      status: 'success',
+      user,
+    });
+  }
+);
+
+export const removeFromCart = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await UserModel.findByIdAndUpdate(
+      (req as CustomRequest).user.id,
+      { $pullAll: { cart: req.body.cart } }
+    );
+
+    return res.status(200).json({
+      status: 'success',
+      user,
+    });
+  }
+);
+
+export const getMyCart = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = (req as CustomRequest).user.id;
+
+    const cart = await UserModel.aggregate([
+      { $match: { _id: new Types.ObjectId(id) } },
+      { $unwind: '$cart' },
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'cart',
+          foreignField: '_id',
+          as: 'cart',
+        },
+      },
+      {
+        $set: { cart: { $first: '$cart' } },
+      },
+      {
+        $group: {
+          _id: '$_id',
+          cart: { $push: '$cart' },
+          quantity: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          quantity: 1,
+          cart: { $first: '$cart' },
+        },
+      },
+    ]);
+
+    return res.status(200).json({
+      status: 'success',
+      data: cart[0],
     });
   }
 );

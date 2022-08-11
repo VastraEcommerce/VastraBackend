@@ -1,5 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { ParsedUrlQueryInput } from 'querystring';
 import APIFeatures from './APIFeatures';
 import AppError from './AppError';
@@ -46,8 +46,11 @@ export const getOne = <T>(
   catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
 
+    console.log({ id });
+
     const query = Model.findById(id);
     if (populateOptions) query.populate(populateOptions);
+
     const doc = await query;
 
     if (!doc) {
