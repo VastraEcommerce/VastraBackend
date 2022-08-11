@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
-import { IProduct, productSchema } from './productModel';
+import { Model, model, Schema, Types } from 'mongoose';
+import { cartSchema, ICart } from './cartModel';
 
 export interface IOrder {
-  products: IProduct[];
+  cartItems: ICart[];
   status:
     | 'pendingPayment'
     | 'preparing'
@@ -10,13 +10,16 @@ export interface IOrder {
     | 'completed'
     | 'canceled';
   totalPrice: number;
+  user: Types.ObjectId;
 }
 
-const orderSchema = new mongoose.Schema<IOrder>(
+interface OrderModel extends Model<IOrder> {}
+
+const orderSchema = new Schema<IOrder>(
   {
-    products: [
+    cartItems: [
       {
-        type: productSchema,
+        type: cartSchema,
         required: true,
       },
     ],
@@ -33,14 +36,24 @@ const orderSchema = new mongoose.Schema<IOrder>(
     },
     totalPrice: {
       type: Number,
+      required: true,
+      default: function () {
+        return this.cartItems.reduce(
+          (prev: number, curr: { price: number; quantity: number }) =>
+            prev + curr.price * curr.quantity,
+          0
+        );
+      },
+    },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: true,
     },
   },
   {
-    timestamps: {
-      createdAt: 'createdAt',
-    },
+    timestamps: true,
   }
 );
 
-const OrderModel = mongoose.model<IOrder>('order', orderSchema);
+const OrderModel = model<IOrder>('order', orderSchema);
 export default OrderModel;

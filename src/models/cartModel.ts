@@ -1,6 +1,6 @@
 import { model, Schema, Types } from 'mongoose';
 
-interface ICart {
+export interface ICart {
   title: string;
   price: number;
   quantity: number;
