@@ -72,6 +72,8 @@ export const getAll = <T>(Model: Model<T>): RequestHandler =>
 
     filter = req.body.user ? { user: req.body.user } : {};
 
+    console.log({ filter });
+
     // Bulid Query
     const feartures = new APIFeatures(
       Model.find(filter),
