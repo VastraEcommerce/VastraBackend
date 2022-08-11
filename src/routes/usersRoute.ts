@@ -21,6 +21,7 @@ import {
   updateMe,
   updateUser,
 } from '../controllers/userControllers';
+import { getCheckoutSession } from './../controllers/paymentController';
 
 const usersRouter = express.Router();
 
@@ -39,6 +40,7 @@ usersRouter.patch('/updateMyPassword', updatePassword);
 usersRouter.get('/me', getMe, getUser);
 usersRouter.patch('/updateMe', updateMe);
 usersRouter.delete('/deleteMe', deleteMe);
+usersRouter.post('/create-checkout-session', getCheckoutSession);
 
 // All Routes after this middleware will be restricted to admin only
 usersRouter.use(restrictTo('admin'));
