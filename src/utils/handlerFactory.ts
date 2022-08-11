@@ -66,9 +66,11 @@ export const getOne = <T>(
 export const getAll = <T>(Model: Model<T>): RequestHandler =>
   catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     // ! To allow for nested GET reviews on products (Hack)
-    const filter = req.params.productId
+    let filter: any = req.params.productId
       ? { product: req.params.productId }
       : {};
+
+    filter = req.body.user ? { user: req.body.user } : {};
 
     // Bulid Query
     const feartures = new APIFeatures(
