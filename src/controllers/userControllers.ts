@@ -67,7 +67,13 @@ export const updateMe = catchAsync(
     }
 
     // todo 2) Filltered out unwanted fields names that not allowed to be updated
-    const filteredBody = filterObj(req.body, 'name', 'email');
+    const filteredBody = filterObj(
+      req.body,
+      'name',
+      'email',
+      'orders',
+      'address'
+    );
     console.log({ filteredBody });
 
     // ?For fileuploads of profile image

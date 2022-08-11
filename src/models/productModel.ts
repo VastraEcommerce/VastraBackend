@@ -22,7 +22,7 @@ export const productShecma = new mongoose.Schema<IProduct>(
       type: String,
       trim: true,
       required: true,
-      enum: ['Shirts', 'Pants', 'T-shirts', 'Sportswear'],
+      // enum: ['Shirts', 'Pants', 'T-shirts', 'Sportswear'],
     },
     brand: {
       type: String,
@@ -32,7 +32,7 @@ export const productShecma = new mongoose.Schema<IProduct>(
     },
     brand_thumbnail: {
       type: String,
-      required: true,
+      // required: true,
       trim: true,
     },
     title: {

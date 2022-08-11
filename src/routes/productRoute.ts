@@ -6,7 +6,9 @@ import {
   getAllProduct,
   getProduct,
   updateProduct,
+  uploadImages
 } from '../controllers/productController';
+import { upload } from '../utils/uploadConfig';
 import reviewsRouter from './reviewRoute';
 const productsRouter = express.Router();
 
@@ -24,5 +26,8 @@ productsRouter
   .get(getProduct)
   .patch(protect, restrictTo('admin'), updateProduct)
   .delete(protect, restrictTo('admin'), deleteProduct);
+
+
+productsRouter.post("/upload", upload.array("images", 5), uploadImages)
 
 export default productsRouter;
