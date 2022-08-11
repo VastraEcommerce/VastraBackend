@@ -27,7 +27,7 @@ const filterObj = (obj: any, ...filteredFeilds: string[]) => {
 
 // Not allowed Update Password
 export const getAllUser = getAll(UserModel);
-export const getUser = getOne(UserModel);
+export const getUser = getOne(UserModel, ['cart', 'orders']);
 export const updateUser = updateModel(UserModel);
 export const deleteUser = deleteModel(UserModel);
 
@@ -97,6 +97,34 @@ export const isExist = catchAsync(
 
     res.status(200).json({
       isExist: user ? true : false,
+    });
+  }
+);
+
+export const addToCart = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await UserModel.findByIdAndUpdate(
+      (req as CustomRequest).user.id,
+      { $push: { cart: req.body.cart } }
+    );
+
+    return res.status(200).json({
+      status: 'success',
+      user,
+    });
+  }
+);
+
+export const removeFromCart = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await UserModel.findByIdAndUpdate(
+      (req as CustomRequest).user.id,
+      { $pullAll: { cart: req.body.cart } }
+    );
+
+    return res.status(200).json({
+      status: 'success',
+      user,
     });
   }
 );
