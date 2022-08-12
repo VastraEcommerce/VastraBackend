@@ -39,8 +39,8 @@ export const getCheckoutSession = catchAsync(
       payment_method_types: ['card'],
       mode: 'payment',
       line_items,
-      success_url: `${req.protocol}://${req.get('host')}/`,
-      cancel_url: `${req.protocol}://${req.get('host')}/cart`,
+      success_url: `${process.env.FORENTEND_BASE_URL!}/`,
+      cancel_url: `${process.env.FORENTEND_BASE_URL!}/cart`,
     });
 
     console.log({ session });
