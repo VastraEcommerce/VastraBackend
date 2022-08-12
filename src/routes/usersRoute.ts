@@ -40,7 +40,7 @@ usersRouter.patch('/updateMyPassword', updatePassword);
 usersRouter.get('/me', getMe, getUser);
 usersRouter.patch('/updateMe', updateMe);
 usersRouter.delete('/deleteMe', deleteMe);
-usersRouter.post('/create-checkout-session', getCheckoutSession);
+usersRouter.get('/create-checkout-session', getCheckoutSession);
 
 // All Routes after this middleware will be restricted to admin only
 usersRouter.use(restrictTo('admin'));
