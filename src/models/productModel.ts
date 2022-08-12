@@ -22,7 +22,7 @@ export const productSchema = new mongoose.Schema<IProduct>(
       type: String,
       trim: true,
       required: true,
-      // enum: ['Shirts', 'Pants', 'T-shirts', 'Sportswear'],
+      enum: ['women', 'men', 'kids'],
     },
     brand: {
       type: String,
