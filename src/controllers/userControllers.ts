@@ -28,7 +28,7 @@ const filterObj = (obj: any, ...filteredFeilds: string[]) => {
 
 // Not allowed Update Password
 export const getAllUser = getAll(UserModel);
-export const getUser = getOne(UserModel, ['cart', 'orders']);
+export const getUser = getOne(UserModel);
 export const updateUser = updateModel(UserModel);
 export const deleteUser = deleteModel(UserModel);
 
