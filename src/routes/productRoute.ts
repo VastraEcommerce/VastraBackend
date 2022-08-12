@@ -28,6 +28,6 @@ productsRouter
   .delete(protect, restrictTo('admin'), deleteProduct);
 
 
-productsRouter.post("/upload", upload.array("images", 5), uploadImages)
+productsRouter.post("/upload", upload.array("images", 100), uploadImages)
 
 export default productsRouter;
