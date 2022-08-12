@@ -1,13 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
-import asyncHandler from 'express-async-handler';
 import Stripe from 'stripe';
+import catchAsync from '../utils/catchAsync';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2022-08-01',
 });
 
-export const getCheckoutSession = asyncHandler(
+export const getCheckoutSession = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    //todo 1) get request body
+    const requestBody = req.body;
+
     // todo 2) Create checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
