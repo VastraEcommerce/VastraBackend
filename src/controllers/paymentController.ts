@@ -51,11 +51,9 @@ export const getCheckoutSession = catchAsync(
 
     // todo 3) Send session as response
 
-    if (process.env.NODE_ENV === 'production') res.redirect(session.url!);
-    else
-      res.status(200).json({
-        status: 'success',
-        session,
-      });
+    res.status(200).json({
+      status: 'success',
+      url: session.url,
+    });
   }
 );
