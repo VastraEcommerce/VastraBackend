@@ -11,6 +11,7 @@ export interface CustomRequest extends Request {
   user: {
     id: string;
     role: IUser['role'];
+    email: string;
   };
 }
 
@@ -208,7 +209,11 @@ export const protect = catchAsync(
       );
 
     // ? GRANT ACCESS TO PROTECTED ROUTE
-    req.user = { id: currentUser.id, role: currentUser.role };
+    req.user = {
+      id: currentUser.id,
+      role: currentUser.role,
+      email: currentUser.email,
+    };
     return next();
   }
 );

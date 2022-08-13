@@ -33,6 +33,7 @@ const orderSchema = new Schema<IOrder>(
         'completed',
         'canceled',
       ],
+      default: 'pendingPayment',
     },
     totalPrice: {
       type: Number,

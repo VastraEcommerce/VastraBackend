@@ -8,6 +8,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import { corsOptions } from './config/corsOptions';
 import globalErrorHandler from './controllers/errorController';
+import { webhook } from './controllers/paymentController';
 import indexRouter from './routes';
 import AppError from './utils/AppError';
 
@@ -41,6 +42,8 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, please try again in an hour!',
 });
 app.use('/api', limiter);
+
+app.use('/api/v1/webhook', express.raw({ type: 'application/json' }), webhook);
 
 // Body parser, reading data from the body into req.body
 app.use(express.json({ limit: '50mb' }));

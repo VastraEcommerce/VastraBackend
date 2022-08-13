@@ -20,7 +20,6 @@ export const setBodyForCart = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log({ user: (req as CustomRequest).user });
   req.body.user = req.body.user
     ? req.body.user
     : (req as CustomRequest).user.id;
